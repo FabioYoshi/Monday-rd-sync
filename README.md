@@ -20,7 +20,7 @@ Antes de iniciar, garanta que você possui instalado:
 ### 🧩 Passo 1 — Clonar o Repositório
 
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
+gh repo clone FabioYoshi/Monday-rd-sync
 cd seu-repositorio
 ```
 
