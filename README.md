@@ -102,6 +102,51 @@ docker run -d -p 8000:8000 --env-file .env monday-rd-integration
 
 ---
 
+## 🔒 7. Configuração de Credenciais
+
+Alguns valores sensíveis precisam ser **definidos manualmente pelo usuário** antes de rodar a aplicação.
+Essas credenciais permitem autenticar as requisições e garantir a segurança da integração entre o **Monday.com**, o **servidor FastAPI** e o **RD Station**.
+
+### 🧩 1. Arquivo `.env`
+
+No arquivo `.env`, complete o valor do token do RD Station e do segredo compartilhado usado pelo webhook do Monday:
+
+```ini
+RD_ACCESS_TOKEN="RD-TOKEN-HERE"
+WEBHOOK_SHARED_SECRET="PASSWORD-HERE"
+```
+
+* **`RD_ACCESS_TOKEN`**: token da sua conta RD Station Marketing.
+  Obtenha em: *Configurações → Integrações → API → Gerar Token*.
+* **`WEBHOOK_SHARED_SECRET`**: senha que você definirá para validar as requisições recebidas do Monday.com.
+
+---
+
+### 🧠 2. Arquivo `main.py`
+
+No arquivo `main.py`, localize a configuração do cabeçalho de autenticação:
+
+```python
+"Authorization": "Bearer API-KEY"
+```
+
+Substitua **`API-KEY`** pela sua chave de autenticação do Monday.com (caso esteja utilizando chamadas autenticadas à API).
+
+---
+
+### ⚙️ 3. Arquivo `rd_client.py`
+
+Neste arquivo, verifique a linha que inicializa o token de acesso do RD Station:
+
+```python
+RD_ACCESS_TOKEN = os.getenv("RD_ACCESS_TOKEN", "RD-TOKEN-HERE")
+```
+
+* O valor **`RD-TOKEN-HERE`** é apenas um fallback (valor padrão).
+  Caso o `.env` não seja carregado, este valor será usado — portanto, **garanta que o `.env` contenha o token correto**.
+
+---
+
 ### ✅ Verificação Final
 
 * O webhook do Monday deve estar **ativado** e validado.
